@@ -1,14 +1,17 @@
+import { useAuth } from "@/store/auth";
 import axios from "axios";
 
-const instance = axios.create({
+export const client = axios.create({
   baseURL: import.meta.env.VITE_BASE_URL,
   timeout: 1000,
 });
 
 // Request Interceptor
-instance.interceptors.request.use(
+client.interceptors.request.use(
   function (config) {
     // Do something before request is sent
+    const token = useAuth.getState().token;
+    if (token) config.headers.Authorization = `Bearer ${token}`;
     return config;
   },
   function (error) {
@@ -18,7 +21,7 @@ instance.interceptors.request.use(
 );
 
 // Response Interceptor
-instance.interceptors.response.use(
+client.interceptors.response.use(
   function (response) {
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data

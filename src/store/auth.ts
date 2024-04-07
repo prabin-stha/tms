@@ -3,7 +3,11 @@ import { immer } from "zustand/middleware/immer";
 import { persist, createJSONStorage } from "zustand/middleware";
 
 import { User } from "@/lib/schema/user";
-import { authService } from "@/lib/services/auth";
+import {
+  RegisterWithError,
+  SecretWithError,
+  authService,
+} from "@/lib/services/auth";
 import { navigate } from "@/lib/config/route";
 import { LoginForm } from "@/routes/login";
 import { RegisterForm } from "@/routes/register";
@@ -11,38 +15,57 @@ import { RegisterForm } from "@/routes/register";
 export interface AuthState {
   user?: User | null;
   token?: string | null;
+  refresh?: string | null;
 }
 
 export interface AuthActions {
-  login: (data: LoginForm) => Promise<void>;
-  register: (data: RegisterForm) => Promise<void>;
+  login: (data: LoginForm) => Promise<SecretWithError>;
+  register: (data: RegisterForm) => Promise<RegisterWithError>;
   logout: () => void;
+  setUser: (user: User) => void;
+  promoteUser: () => Promise<boolean>;
 }
 
 export const useAuth = create<AuthState & AuthActions>()(
   persist(
-    immer((set) => ({
+    immer((set, get) => ({
       user: null,
       token: null,
       login: async (data) => {
-        const user = await authService.login(data);
-        if (user) {
-          set((state) => {
-            state.token = crypto.randomUUID();
-            state.user = user;
-          });
+        const { data: secret, error } = await authService.login(data);
+
+        if (error) return { error };
+
+        set((state) => {
+          state.token = secret?.access;
+          state.refresh = secret?.refresh;
+        });
+
+        let user: User | null = null;
+        user = await authService.getUser();
+
+        if (secret && user) {
           navigate({ to: "/" });
+        } else {
+          set((state) => {
+            state.token = null;
+            state.refresh = null;
+          });
         }
+
+        return false;
       },
       register: async (data) => {
-        const user = await authService.register(data);
+        const { data: user, error } = await authService.register(data);
+        if (error) return { error };
         if (user) {
           set((state) => {
-            state.token = crypto.randomUUID();
+            state.token = user.access;
             state.user = user;
           });
           navigate({ to: "/" });
         }
+        return false;
       },
       logout: () => {
         set((state) => {
@@ -51,6 +74,28 @@ export const useAuth = create<AuthState & AuthActions>()(
           useAuth.persist.clearStorage();
         });
         navigate({ to: "/login" });
+      },
+      setUser: (user) => {
+        set((state) => {
+          state.user = user;
+        });
+      },
+      promoteUser: async () => {
+        const userId = get().user?.id;
+        if (userId) {
+          const promoted = await authService.promoteToProvider();
+          if (promoted) {
+            set((state) => {
+              if (state.user?.role_type) {
+                state.user.role_type = "provider";
+              }
+            });
+            return true;
+          } else {
+            return false;
+          }
+        }
+        return false;
       },
     })),
     {

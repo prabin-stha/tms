@@ -27,6 +27,7 @@ import { BackgroundImage } from "@/components/ui/background-image";
 import bg from "@/assets/bg.jpg";
 
 import { useAuth } from "@/store/auth";
+import { useToast } from "@/components/ui/use-toast";
 
 export const Route = createFileRoute("/login")({
   beforeLoad() {
@@ -57,9 +58,26 @@ function Login() {
     defaultValues,
   });
   const login = useAuth((state) => state.login);
+  const { toast } = useToast();
 
   const handleSubmit = async (values: LoginForm) => {
-    await login(values);
+    const { error } = await login(values);
+    if (!error)
+      toast({
+        title: "Login Success",
+        description: "Account Login Successfull.",
+      });
+    else if (error.empty)
+      toast({
+        title: "Login Failure",
+        description: "Some Error Occured!",
+      });
+    else {
+      toast({
+        title: "Login Failure",
+        description: error.message,
+      });
+    }
   };
 
   return (
