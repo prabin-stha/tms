@@ -1,7 +1,6 @@
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
-import { Rating } from "../rating";
 import { BookedSlot } from "@/lib/schema/user";
 import { Clock8Icon } from "lucide-react";
 import { UserRating } from "../user-rating";
@@ -9,11 +8,8 @@ import { UserRating } from "../user-rating";
 export function BookedCard(props: BookedSlot) {
   const {
     id,
-    slot_id,
     status,
     rating,
-    booked,
-    is_paid,
     parking_address,
     start_time,
     end_time,

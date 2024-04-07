@@ -36,13 +36,13 @@ function Index() {
           description: "Payment sucessfully completed!",
         });
         console.log("status", status);
-        // clearSearchParams();
+        clearSearchParams();
       } else if (failedStatus.includes(status)) {
         toast({
           title: "Booking Failure",
           description: "Error processing payment!",
         });
-        // clearSearchParams();
+        clearSearchParams();
       }
     }
   }, [toast]);
