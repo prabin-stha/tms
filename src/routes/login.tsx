@@ -138,7 +138,7 @@ function Login() {
               </Form>
             </CardContent>
             <CardFooter>
-              <CardDescription>Already have an account?</CardDescription>
+              <CardDescription>Don't have an account?</CardDescription>
               <Button variant="link" className="pl-1">
                 <Link to="/register">Register</Link>
               </Button>
