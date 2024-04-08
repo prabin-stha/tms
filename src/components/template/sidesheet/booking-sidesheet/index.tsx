@@ -60,13 +60,12 @@ export function BookingSidesheet() {
       if (khaltiUrl) {
         window.open(khaltiUrl, "_self");
       }
-      // update state
 
       closeSidesheet();
     } catch (err) {
       toast({
         title: "Booking Failure",
-        description: "Error booking slot!",
+        description: "Slot is already booked for the selected time range!",
       });
     }
   };

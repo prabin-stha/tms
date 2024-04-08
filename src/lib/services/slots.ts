@@ -1,6 +1,7 @@
 import { CreateSlot } from "@/components/template/sidesheet/add-slot-sidesheet";
 import {
   Rate,
+  bookedSlotUsersSchema,
   bookedSlotsSchema,
   bookingSchema,
   bookingSlotsSchema,
@@ -10,8 +11,12 @@ import {
 import { client } from "./axios";
 import { BookingSlot } from "@/components/template/sidesheet/booking-sidesheet";
 
-export async function getAllParkSlots() {
-  const response = await client.get("/api/v1/parkslots/");
+// ?address__icontains=street&status=Available&price=10&type=Bike' \
+export async function getAllParkSlots(address?: string, type?: string) {
+  let url = "/api/v1/parkslots?";
+  if (address) url += `address__icontains=${address}`;
+  if (type) url += `type=${type}`;
+  const response = await client.get(url);
   const parsed = slotsSchema.parse(response.data.results);
 
   return parsed;
@@ -93,6 +98,12 @@ export async function fetchAllBookedSlots() {
 
 export async function rateSlot(data: Rate) {
   await client.post("/api/v1/rate/", data);
+}
+
+export async function fetchSingleBooking(id: number) {
+  const response = await client.get(`api/v1/parkslot/bookings/${id}/`);
+  const parsed = bookedSlotUsersSchema.parse(response.data.data);
+  return parsed;
 }
 
 function addSeconds(datetimeValue: string) {

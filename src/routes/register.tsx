@@ -122,7 +122,7 @@ function Register() {
             <CardHeader className="space-y-1">
               <CardTitle className="text-2xl font-bold">Register</CardTitle>
               <CardDescription>
-                Enter email and password to create your new account
+                Fill in the details below to create your new account
               </CardDescription>
             </CardHeader>
             <CardContent>
@@ -150,24 +150,6 @@ function Register() {
                         </FormItem>
                       )}
                     />
-                    {/* <FormField
-                      control={form.control}
-                      name="username"
-                      render={({ field }) => (
-                        <FormItem className="space-y-2">
-                          <FormLabel>Username</FormLabel>
-                          <FormControl>
-                            <Input
-                              placeholder="max"
-                              required
-                              type="text"
-                              {...field}
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    /> */}
                   </div>
                   <FormField
                     control={form.control}
@@ -251,7 +233,7 @@ function Register() {
                     />
                   </div>
                   <Button className="w-full" type="submit">
-                    Regiser
+                    Register
                   </Button>
                 </form>
               </Form>

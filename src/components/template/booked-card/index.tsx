@@ -61,52 +61,16 @@ export function BookedCard(props: BookedSlot) {
           id={id}
           initialRating={rating ?? 0}
           readOnly={status?.toLowerCase() === "booked"}
+          booked
         />
       </CardContent>
       <Separator />
-      {/* <CardFooter className="p-2 flex justify-between items-center">
-        <BookingDrawer {...props} />
-        {showActions ? (
-          <div className="flex gap-3 justify-end">
-            <Button
-              className="p-1 h-8 w-8"
-              variant="destructive"
-              onClick={handleDeleteSlot}
-            >
-              <Trash2Icon className="h-4 w-4 font-black" />
-            </Button>
-            <Button
-              className="p-1 h-8 w-8"
-              variant="outline"
-              onClick={async () => {
-                openSidesheet(ESidesheet.ADD_SLOT, {
-                  isEditing: true,
-                  data: props,
-                });
-              }}
-            >
-              <Pencil className="h-4 w-4" />
-            </Button>
-          </div>
-        ) : hideBookNow ? null : (
-          <Button
-            className="px-3 py-1 h-7 text-xs font-bold"
-            variant="secondary"
-            onClick={async () => {
-              openSidesheet(ESidesheet.BOOK_SLOT, {
-                data: { park_slot_id: id, rate: price },
-              });
-            }}
-          >
-            Book Now
-          </Button>
-        )}
-      </CardFooter> */}
     </Card>
   );
 }
 
-function formatDateString(startDateStr: string, endDateStr: string) {
+// eslint-disable-next-line react-refresh/only-export-components
+export function formatDateString(startDateStr: string, endDateStr: string) {
   const startDate = new Date(startDateStr);
   const endDate = new Date(endDateStr);
 

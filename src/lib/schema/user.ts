@@ -61,6 +61,20 @@ export const bookedSlotSchema = z.object({
 });
 export const bookedSlotsSchema = z.array(bookedSlotSchema);
 
+export const bookedSlotUserSchema = z.object({
+  id: z.number(),
+  user_email: z.string(),
+  start_time: z.string(),
+  end_time: z.string(),
+  duration_minutes: z.number(),
+  total_price: z.number(),
+  booked: z.boolean(),
+  is_paid: z.boolean(),
+  status: z.string(),
+  rating: z.number().nullable(),
+});
+export const bookedSlotUsersSchema = z.array(bookedSlotUserSchema);
+
 export type User = z.infer<typeof userSchema>;
 export type Slot = z.infer<typeof slotSchema>;
 export type Secret = z.infer<typeof secretSchema>;
@@ -69,3 +83,4 @@ export type BookingSlot = z.infer<typeof bookingSlotSchema>;
 export type BookingSlots = z.infer<typeof bookingSlotsSchema>;
 export type Rate = z.infer<typeof rateSchema>;
 export type BookedSlot = z.infer<typeof bookedSlotSchema>;
+export type BookedSlotUser = z.infer<typeof bookedSlotUserSchema>;

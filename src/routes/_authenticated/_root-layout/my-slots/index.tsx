@@ -36,7 +36,13 @@ function MySlots() {
       <section className="grid grid-cols-5 gap-2">
         {!slots?.length && <p>You don't have any slots.</p>}
         {slots?.map((slot) => (
-          <BookingCard key={slot.id} showActions hideBookNow {...slot} />
+          <BookingCard
+            key={slot.id}
+            showActions
+            hideBookNow
+            showBookingInfo
+            {...slot}
+          />
         ))}
       </section>
     </div>

@@ -27,6 +27,7 @@ export interface BookingCardProps {
   showActions?: boolean;
   showRating?: boolean;
   hideBookNow?: boolean;
+  showBookingInfo?: boolean;
 }
 
 export function BookingCard(props: BookingCardProps) {

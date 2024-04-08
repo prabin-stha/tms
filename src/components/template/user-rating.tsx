@@ -13,11 +13,13 @@ interface UserRatingProps {
   id: number;
   initialRating: number;
   readOnly?: boolean;
+  booked?: boolean;
 }
 export function UserRating({
   id,
   initialRating = 0,
   readOnly,
+  booked,
 }: UserRatingProps) {
   const [rating, setRating] = useState(initialRating);
   const [hoveringRating, setHoveringRating] = useState(0);
@@ -29,7 +31,9 @@ export function UserRating({
 
   return (
     <div>
-      <span className="text-sm font-semibold">Rate your experience.</span>
+      <span className="text-sm font-semibold">
+        {booked ? "Rate your experience." : "Average Rating"}
+      </span>
       <Rating
         isDisabled={initialRating > 0 || readOnly}
         halfFillMode="svg"
@@ -39,7 +43,7 @@ export function UserRating({
         onHoverChange={setHoveringRating}
         itemStyles={myStyles}
       />
-      {readOnly ? (
+      {booked && readOnly ? (
         <span className="block mt-1 ml-1 text-xs">
           Complete your parking to rate.
         </span>
