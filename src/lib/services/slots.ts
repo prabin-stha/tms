@@ -13,7 +13,7 @@ import { BookingSlot } from "@/components/template/sidesheet/booking-sidesheet";
 
 // ?address__icontains=street&status=Available&price=10&type=Bike' \
 export async function getAllParkSlots(address?: string, type?: string) {
-  let url = "/api/v1/parkslots?";
+  let url = "/api/parkslots?";
   if (address) url += `address__icontains=${address}`;
   if (type) url += `type=${type}`;
   const response = await client.get(url);
@@ -23,7 +23,7 @@ export async function getAllParkSlots(address?: string, type?: string) {
 }
 
 export async function getUserParkSlots() {
-  const response = await client.get("/api/v1/parkslot/");
+  const response = await client.get("/api/parkslot/");
   const parsed = slotsSchema.parse(response.data.results);
 
   return parsed;
@@ -41,7 +41,7 @@ export async function createUserParkSlot(data: CreateSlot) {
     data.picture?.[0]?.name
   );
 
-  const response = await client.post("/api/v1/parkslot/", formData);
+  const response = await client.post("/api/parkslot/", formData);
   const parsed = slotSchema.parse(response.data);
 
   return parsed;
@@ -61,18 +61,18 @@ export async function updateUserParkSlot(id: number, data: CreateSlot) {
     );
   }
 
-  const response = await client.patch(`/api/v1/parkslot/${id}/`, formData);
+  const response = await client.patch(`/api/parkslot/${id}/`, formData);
   const parsed = slotSchema.parse(response.data);
 
   return parsed;
 }
 
 export async function deleteUserParkSlot(id: number) {
-  await client.delete(`/api/v1/parkslot/${id}`);
+  await client.delete(`/api/parkslot/${id}`);
 }
 
 export async function bookSlot(data: BookingSlot) {
-  const response = await client.post("/api/v1/book/", {
+  const response = await client.post("/api/book/", {
     ...data,
     start_time: addSeconds(data.start_time),
     end_time: addSeconds(data.end_time),
@@ -83,25 +83,25 @@ export async function bookSlot(data: BookingSlot) {
 }
 
 export async function fetchBookedSlots() {
-  const response = await client.get("/api/v1/bookings/");
+  const response = await client.get("/api/bookings/");
   const parsed = bookedSlotsSchema.parse(response.data.data);
 
   return parsed;
 }
 
 export async function fetchAllBookedSlots() {
-  const response = await client.get("/api/v1/parkslot/bookings/");
+  const response = await client.get("/api/parkslot/bookings/");
   const parsed = bookingSlotsSchema.parse(response.data.data);
 
   return parsed;
 }
 
 export async function rateSlot(data: Rate) {
-  await client.post("/api/v1/rate/", data);
+  await client.post("/api/rate/", data);
 }
 
 export async function fetchSingleBooking(id: number) {
-  const response = await client.get(`api/v1/parkslot/bookings/${id}/`);
+  const response = await client.get(`api/parkslot/bookings/${id}/`);
   const parsed = bookedSlotUsersSchema.parse(response.data.data);
   return parsed;
 }

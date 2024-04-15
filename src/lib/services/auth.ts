@@ -12,7 +12,7 @@ export interface FormError {
 
 async function getUser(): Promise<User | null> {
   try {
-    const response = await client.get("/api/v1/user/");
+    const response = await client.get("/api/user/");
     const parsedData = userSchema.parse(response.data.data);
 
     return parsedData;
@@ -27,7 +27,7 @@ export interface SecretWithError {
 }
 async function login(data: LoginForm): Promise<SecretWithError> {
   try {
-    const response = await client.post("/api/v1/get-token/", {
+    const response = await client.post("/get-token/", {
       username: data.email,
       password: data.password,
     });
@@ -46,7 +46,7 @@ async function refresh(): Promise<Secret | null> {
   try {
     const refresh = useAuth.getState().refresh;
     if (refresh) {
-      const response = await client.post("/api/v1/refresh/", { refresh });
+      const response = await client.post("/api/refresh/", { refresh });
       const parsedData = secretSchema.parse(response.data.data);
 
       return parsedData;
@@ -65,7 +65,7 @@ async function register(data: RegisterForm): Promise<RegisterWithError> {
   try {
     const formData = new FormData();
     formData.append("email", data.email);
-    formData.append("username", data.username);
+    formData.append("username", data.email);
     formData.append("password", data.password);
     formData.append(
       "profilePic",
@@ -73,7 +73,7 @@ async function register(data: RegisterForm): Promise<RegisterWithError> {
       data.profilePic?.[0]?.name
     );
     formData.append("role_type", data.roleType);
-    const response = await client.post("/api/v1/register/", formData);
+    const response = await client.post("/api/register/", formData);
     const parsedData = userSchema.parse(response.data.data);
 
     return { data: parsedData };
@@ -91,7 +91,7 @@ async function register(data: RegisterForm): Promise<RegisterWithError> {
 
 async function promoteToProvider() {
   try {
-    await client.put(`/api/v1/user/update/`, {
+    await client.put(`/api/user/update/`, {
       role_type: "provider",
     });
     return true;

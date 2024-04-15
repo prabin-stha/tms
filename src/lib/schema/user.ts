@@ -16,7 +16,7 @@ export const slotSchema = z.object({
   address: z.string(),
   description: z.string(),
   type: z.string(),
-  picture: z.string(),
+  picture: z.string().nullable().optional(),
   rating: z.number(),
 });
 export const slotsSchema = z.array(slotSchema);

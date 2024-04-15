@@ -52,7 +52,6 @@ export const Route = createFileRoute("/register")({
 const formSchema = z
   .object({
     email: z.string().email(),
-    // username: z.string().min(2),
     profilePic: z
       .instanceof(FileList)
       .nullable()
@@ -69,7 +68,6 @@ export type RegisterForm = z.infer<typeof formSchema>;
 
 const defaultValues: RegisterForm = {
   email: "",
-  // username: "",
   profilePic: null,
   password: "",
   roleType: "user",
